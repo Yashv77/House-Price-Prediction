@@ -93,7 +93,6 @@ with tab2:
 # --- Project Pipeline & EDA Tab ---
 with tab3:
     st.header("Project Pipeline & EDA")
-    st.image("https://i.imgur.com/9IZv2zS.png", caption="ML Project Pipeline")
     st.markdown(
         """
         This project follows a standard ML pipeline:
