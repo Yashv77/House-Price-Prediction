@@ -29,7 +29,7 @@ with st.sidebar:
     st.info("This app predicts California house prices using various ML models. Choose a model to get started.")
     st.title("Tech Stack")
     st.markdown("- Python\n- Scikit-learn\n- Pandas\n- Streamlit\n- XGBoost\n- LightGBM\n- CatBoost")
-    st.markdown("Developed by [Yash Vardhan](https://github.com/Yashv77)")
+    st.markdown("Developed by [Yash Vardhan](https://yash-vardhan-portfolio-website.netlify.app/)")
 
 # --- Main Application ---
 st.title('🏠 California House Price Prediction')
