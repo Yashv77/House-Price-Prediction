@@ -1,64 +1,76 @@
-# House Price Prediction System
+# California House Price Prediction System
 
-This project is a machine learning system designed to predict house prices based on various features of the property. It includes a data preprocessing pipeline, a model training script with hyperparameter tuning, and a Streamlit web application for interactive predictions.
+This project is an interactive machine learning application that predicts median house values in California. It allows users to select from a variety of regression models, view their performance metrics, and get real-time price predictions based on input features.
+
+## Key Features
+
+-   **Multi-Model Prediction**: Select from a range of ML models (e.g., Linear Regression, Random Forest, XGBoost, CatBoost) to see how different algorithms perform.
+-   **Interactive UI**: A user-friendly interface built with Streamlit that allows for easy input of house features.
+-   **Model Performance Analysis**: A dedicated tab to compare models based on their RMSE scores and a 1-10 rating system.
+-   **Integrated EDA**: An in-app tab showcasing the Exploratory Data Analysis performed on the dataset.
 
 ## Project Structure
 
-The project is organized as follows:
+```
+house-price-prediction/
+├── app/
+│   └── app.py
+├── data/
+│   └── housing.csv
+├── models/
+│   ├── CatBoost_model.pkl
+│   ├── ... (other trained models)
+│   └── model_scores.json
+├── src/
+│   ├── __init__.py
+│   ├── eda.py
+│   ├── preprocess.py
+│   └── train.py
+├── .gitignore
+├── requirements.txt
+└── README.md
+```
 
-- `app/`: Contains the Streamlit application code.
-- `data/`: Stores the dataset files (`train.csv`, `test.csv`).
-- `notebooks/`: Holds Jupyter notebooks for exploratory data analysis.
-- `src/`: Contains the source code for data preprocessing and model training.
-- `.gitignore`: Specifies files and directories to be ignored by Git.
-- `requirements.txt`: Lists the Python dependencies for the project.
-- `README.md`: Provides a detailed description of the project.
+-   **app/**: Contains the main Streamlit application code.
+-   **data/**: Stores the `housing.csv` dataset.
+-   **models/**: Contains all the trained model files (`.pkl`) and a JSON file with their performance scores.
+-   **src/**: Holds the Python source code for EDA, preprocessing, and model training.
 
-## Setup Instructions
+## How to Run the Project
 
-To set up and run this project on your local machine, follow these steps:
+Follow these steps to set up and run the project locally:
 
-1.  **Clone the repository:**
+1.  **Clone the Repository**
     ```bash
     git clone https://github.com/your-username/house-price-prediction.git
     cd house-price-prediction
     ```
 
-2.  **Create a virtual environment:**
+2.  **Set Up a Virtual Environment**
     ```bash
     python -m venv venv
-    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
     ```
 
-3.  **Install the dependencies:**
+3.  **Install Dependencies**
     ```bash
     pip install -r requirements.txt
     ```
 
-## Usage
+4.  **Train the Models**
+    Run the training script to train all the models and generate their performance scores. This step is crucial as it creates the files the Streamlit app depends on.
+    ```bash
+    python src/train.py
+    ```
 
-### 1. Exploratory Data Analysis (EDA)
+5.  **Launch the Streamlit App**
+    ```bash
+    streamlit run app/app.py
+    ```
+    This will open the application in your default web browser.
 
-To explore the dataset and understand the relationships between different features, you can use the Jupyter notebook provided:
+## Using the Application
 
-```bash
-jupyter lab notebooks/EDA.ipynb
-```
-
-### 2. Model Training
-
-To train the house price prediction model, run the following command in your terminal. This will preprocess the data, train a Random Forest Regressor, and save the trained model as `house_price_model.pkl`.
-
-```bash
-python src/train.py
-```
-
-### 3. Streamlit Web Application
-
-After training the model, you can launch the interactive web application to get real-time price predictions.
-
-```bash
-streamlit run app/app.py
-```
-
-This will open a new tab in your web browser with the application interface. You can input the house features in the form and click "Predict Price" to see the estimated price. 
+-   **Prediction Tab**: Choose a model from the dropdown (sorted by performance), input the house features, and click "Predict Price" to get a prediction.
+-   **Model Performance Tab**: View a detailed comparison of all trained models, including their RMSE scores and a 1-10 rating.
+-   **Project Pipeline & EDA Tab**: Explore the project's workflow and see key visualizations from the exploratory data analysis. 

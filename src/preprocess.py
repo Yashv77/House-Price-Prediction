@@ -9,12 +9,9 @@ def preprocess_data(df):
     """
     This function preprocesses the housing data.
     """
-    # Drop the Id column as it is not a feature
-    df = df.drop('Id', axis=1)
-
     # Separate target variable from features
-    X = df.drop('SalePrice', axis=1)
-    y = df['SalePrice']
+    X = df.drop('median_house_value', axis=1)
+    y = df['median_house_value']
 
     # Identify numerical and categorical features
     numerical_features = X.select_dtypes(include=['int64', 'float64']).columns
