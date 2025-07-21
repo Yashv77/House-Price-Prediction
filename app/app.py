@@ -4,6 +4,7 @@ import joblib
 import json
 import sys
 import os
+import numpy as np
 
 # --- Path Setup ---
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -11,13 +12,11 @@ from src import eda
 
 # --- Data Loading Functions ---
 def load_model_data():
-    """Loads model scores and ratings from the JSON file."""
     with open('models/model_scores.json', 'r') as f:
         return json.load(f)
 
 @st.cache_resource
 def load_model(model_name):
-    """Loads a specific trained model from disk."""
     model_path = f'models/{model_name.replace(" ", "_")}_model.pkl'
     return joblib.load(model_path)
 
@@ -30,7 +29,6 @@ with st.sidebar:
     st.info("This app predicts California house prices using various ML models. Choose a model to get started.")
     st.title("Tech Stack")
     st.markdown("- Python\n- Scikit-learn\n- Pandas\n- Streamlit\n- XGBoost\n- LightGBM\n- CatBoost")
-    st.markdown("Developed by [Yash Vardhan](https://github.com/Yashv77)")
 
 # --- Main Application ---
 st.title('🏠 California House Price Prediction')
@@ -40,13 +38,11 @@ tab1, tab2, tab3 = st.tabs(["Prediction", "Model Performance", "Project Pipeline
 # --- Prediction Tab ---
 with tab1:
     st.header("Make a Prediction")
-    
     model_data = load_model_data()
-    model_ratings = model_data['ratings']
-    model_options = [f"{name} (Rating: {rating}/10)" for name, rating in sorted(model_ratings.items(), key=lambda item: item[1], reverse=True)]
+    model_ranks = model_data['rank']
+    model_options = [f"{name} (Rank: {model_ranks[name]})" for name in sorted(model_ranks, key=lambda n: model_ranks[n])]
     selected_option = st.selectbox("Choose a Model", model_options)
-    selected_model_name = selected_option.split(" (")[0]
-    
+    selected_model_name = selected_option.split(" (Rank")[0]
     with st.form("prediction_form"):
         st.header("Input Features")
         col1, col2, col3 = st.columns(3)
@@ -62,7 +58,6 @@ with tab1:
             households = st.number_input('Households', value=126.0)
             median_income = st.number_input('Median Income (x$10,000)', value=8.3252)
             ocean_proximity = st.selectbox('Ocean Proximity', ['NEAR BAY', '<1H OCEAN', 'INLAND', 'NEAR OCEAN', 'ISLAND'])
-        
         submitted = st.form_submit_button("Predict Price")
         if submitted:
             model = load_model(selected_model_name)
@@ -76,19 +71,18 @@ with tab1:
 # --- Model Performance Tab ---
 with tab2:
     st.header("Model Performance Comparison")
-    st.markdown("Here you can see the performance of each model. A lower RMSE (Root Mean Squared Error) is better, and the rating is scaled from 1-10 accordingly.")
-    
+    st.markdown("Here you can see the performance of each model. Lower RMSE is better. Rank 1 is the best model.")
     model_data = load_model_data()
+    # Build a DataFrame and sort by rank
     performance_df = pd.DataFrame({
-        "Model": model_data['ratings'].keys(),
-        "Rating (1-10)": model_data['ratings'].values(),
-        "RMSE Score": model_data['rmse'].values()
-    }).sort_values(by="Rating (1-10)", ascending=False).reset_index(drop=True)
-    
+        "Model": list(model_data['rank'].keys()),
+        "Rank": list(model_data['rank'].values()),
+        "RMSE Score": [model_data['rmse'][m] for m in model_data['rank'].keys()],
+        "Mean Error": [model_data['confidence'][m]['mean_error'] for m in model_data['rank'].keys()],
+        "Std Error": [model_data['confidence'][m]['std_error'] for m in model_data['rank'].keys()]
+    })
+    performance_df = performance_df.sort_values(by="Rank").reset_index(drop=True)
     st.dataframe(performance_df)
-    
-    st.subheader("Model Ratings Visualized")
-    st.bar_chart(performance_df.set_index('Model')['Rating (1-10)'])
 
 # --- Project Pipeline & EDA Tab ---
 with tab3:

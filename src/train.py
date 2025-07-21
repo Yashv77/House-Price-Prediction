@@ -34,25 +34,6 @@ def get_models():
     }
     return models
 
-# --- Score Conversion ---
-def calculate_ratings(scores):
-    """Converts RMSE scores to a 1-10 rating."""
-    min_score = min(scores.values())
-    max_score = max(scores.values())
-    
-    # Avoid division by zero if all scores are the same
-    if max_score == min_score:
-        return {name: 10 for name in scores}
-
-    ratings = {}
-    for name, score in scores.items():
-        # Normalize the score (0-1 range, lower is better)
-        normalized_score = (score - min_score) / (max_score - min_score)
-        # Invert so higher is better, and scale to 1-10
-        rating = 1 + (1 - normalized_score) * 9
-        ratings[name] = round(rating, 2)
-    return ratings
-
 # --- Main Training Logic ---
 def train_and_evaluate():
     """Trains all models, evaluates them, and saves models, scores, and ratings."""
@@ -62,27 +43,37 @@ def train_and_evaluate():
 
     models = get_models()
     model_scores = {}
+    model_errors = {}
+    model_confidence = {}
 
     for name, model in models.items():
         print(f"Training {name}...")
         pipeline = Pipeline(steps=[('preprocessor', preprocessor), ('regressor', model)])
         pipeline.fit(X_train, y_train)
-        
         y_pred = pipeline.predict(X_test)
         rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+        errors = y_test - y_pred
         model_scores[name] = rmse
+        model_errors[name] = errors.tolist()
+        model_confidence[name] = {
+            "mean_error": float(np.mean(errors)),
+            "std_error": float(np.std(errors))
+        }
         print(f"  RMSE for {name}: {rmse:.2f}")
-        
         joblib.dump(pipeline, f'models/{name.replace(" ", "_")}_model.pkl')
 
-    # Calculate ratings and save both scores and ratings
-    model_ratings = calculate_ratings(model_scores)
-    
+    # Calculate ranks (1 = best)
+    sorted_models = sorted(model_scores.items(), key=lambda x: x[1])
+    model_ranks = {name: rank+1 for rank, (name, _) in enumerate(sorted_models)}
+
     with open('models/model_scores.json', 'w') as f:
-        json.dump({'rmse': model_scores, 'ratings': model_ratings}, f, indent=4)
-        
+        json.dump({
+            'rmse': model_scores,
+            'rank': model_ranks,
+            'confidence': model_confidence
+        }, f, indent=4)
     print("\nAll models trained and files saved successfully!")
-    print("Scores and ratings saved to models/model_scores.json")
+    print("Scores, ranks, and confidence intervals saved to models/model_scores.json")
 
 if __name__ == '__main__':
     train_and_evaluate() 

@@ -12,17 +12,63 @@
         "SVR": 116917.37608225753,
         "KNN": 61309.752197135225
     },
-    "ratings": {
-        "Linear Regression": 6.91,
-        "Ridge": 6.91,
-        "Lasso": 6.91,
-        "ElasticNet": 5.86,
-        "Random Forest": 9.57,
-        "Gradient Boosting": 8.69,
-        "XGBoost": 9.74,
-        "LightGBM": 9.75,
-        "CatBoost": 10.0,
-        "SVR": 1.0,
-        "KNN": 8.01
+    "rank": {
+        "CatBoost": 1,
+        "LightGBM": 2,
+        "XGBoost": 3,
+        "Random Forest": 4,
+        "Gradient Boosting": 5,
+        "KNN": 6,
+        "Linear Regression": 7,
+        "Lasso": 8,
+        "Ridge": 9,
+        "ElasticNet": 10,
+        "SVR": 11
+    },
+    "confidence": {
+        "Linear Regression": {
+            "mean_error": 1040.846693684092,
+            "std_error": 70051.46115183237
+        },
+        "Ridge": {
+            "mean_error": 1039.9766846185644,
+            "std_error": 70058.3026072885
+        },
+        "Lasso": {
+            "mean_error": 1040.7946228566316,
+            "std_error": 70052.59116734631
+        },
+        "ElasticNet": {
+            "mean_error": -159.36827446339188,
+            "std_error": 78389.10768063195
+        },
+        "Random Forest": {
+            "mean_error": -843.9275000000006,
+            "std_error": 48934.423659096006
+        },
+        "Gradient Boosting": {
+            "mean_error": -93.88495874105533,
+            "std_error": 55903.045354330345
+        },
+        "XGBoost": {
+            "mean_error": -228.6404589275981,
+            "std_error": 47612.26581829447
+        },
+        "LightGBM": {
+            "mean_error": -260.7168643619643,
+            "std_error": 47569.566609354595
+        },
+        "CatBoost": {
+            "mean_error": 152.44376588429054,
+            "std_error": 45551.731205484946
+        },
+        "SVR": {
+            "mean_error": 25608.54186115805,
+            "std_error": 114078.3739965878
+        },
+        "KNN": {
+            "mean_error": 3308.8079457364333,
+            "std_error": 61220.40104779092
+        }
     }
 }
