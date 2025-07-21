@@ -19,7 +19,7 @@ def plot_target_distribution(df):
 
 def plot_correlation_heatmap(df):
     """Plots the correlation heatmap for numerical features."""
-    fig, ax = plt.subplots(figsize=(12, 9))
+    fig, ax = plt.subplots(figsize=(8, 6))
     numeric_df = df.select_dtypes(include=['int64', 'float64'])
     corrmat = numeric_df.corr()
     sns.heatmap(corrmat, vmax=.8, square=True, annot=True, cmap='viridis', ax=ax)
