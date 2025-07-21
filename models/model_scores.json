@@ -1,0 +1,28 @@
+{
+    "rmse": {
+        "Linear Regression": 70059.19333925014,
+        "Ridge": 70066.02112093248,
+        "Lasso": 70060.3224564827,
+        "ElasticNet": 78389.26968158725,
+        "Random Forest": 48941.70034309343,
+        "Gradient Boosting": 55903.12419063709,
+        "XGBoost": 47612.81479613856,
+        "LightGBM": 47570.281065862815,
+        "CatBoost": 45551.98628949684,
+        "SVR": 116917.37608225753,
+        "KNN": 61309.752197135225
+    },
+    "ratings": {
+        "Linear Regression": 6.91,
+        "Ridge": 6.91,
+        "Lasso": 6.91,
+        "ElasticNet": 5.86,
+        "Random Forest": 9.57,
+        "Gradient Boosting": 8.69,
+        "XGBoost": 9.74,
+        "LightGBM": 9.75,
+        "CatBoost": 10.0,
+        "SVR": 1.0,
+        "KNN": 8.01
+    }
+}
